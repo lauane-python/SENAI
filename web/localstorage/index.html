@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Local Storage</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Utiliazando o LocalStorage</h>
+        <p id="segredo">Semana que vem tem o que???????? Surpresa!!!!!!!!!</p>
+        <button id="recuperar">Recuperar</button>
+    </header>
+    <main>
+        <section>
+            <label for="informacao">Digite a informação</label>
+            <input type="text" id="informacao">
+            <button id="salvar">Salvar</button>
+        </section>
+    </main>
+    <script>
+        document.getElementById("salvar").addEventListener('click',()=>{
+            const texto = document.getElementById('informacao').value
+            // guardando no LocalStorage
+            localStorage.setItem("minha_chave", texto)
+            alert("gravou")
+        })
+        document.getElementById('recuperar').addEventListener('click',()=>{
+            const dados = localStorage.getItem("minha_chave")
+            document.getElementById('segredo').innerText = dados
+        })
+    </script>
+</body>
+</html>

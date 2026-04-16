@@ -1,0 +1,36 @@
+{
+    "openapi":"3.0.0",
+    "info":{
+        "title":"Minha API Backend Lauane",
+        "version":"1.0.0",
+        "description":"documentação do meu projeto StarDev"
+
+    },
+    "paths":{
+        "/produtos":{
+            "get":{
+                "summary":"Lista de produtos no sistema",
+                "responses":{
+                    "200":{"description":"Lista listada com sucesso"}
+                }
+            },
+            "post":{
+                "summary":"Criar um novo usuario",
+                "requestBody":{
+                    "required":"true",
+                    "content":{
+                        "application/json":{
+                            "schema":{
+                                "type":"object",
+                                "properties":{
+                                    "nome":{"type":"string"},
+                                    "email":{"type":"string"}
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
