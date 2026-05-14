@@ -1,23 +1,34 @@
+import React from "react";
+import { View, Dimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { Dimensions, View } from "react-native";
 import LottieView from "lottie-react-native";
-import Styles from "../Styles/Styles";
+
 const { width, height } = Dimensions.get("screen");
-const SplashScreen = () => {
-  const navigation = useNavigation();
-  const animacacao = () => {
-    navigation.navigate("LoginScreen");
-  };
-  return (
-    <View style={Styles.containerS}>
-      <LottieView
-        source={require("../../assets/splash.json")}
-        style={{ width: width * 1.2, height: height * 1.4 }}
-        autoPlay
-        loop={false}
-        onAnimationFinish={animacacao}
-      />
-    </View>
-  );
-};
-export default SplashScreen;
+
+export default function SplashScreen() {
+    const navigation = useNavigation();
+
+    function finalizarAnimacao() {
+        navigation.replace("HomeScreen");
+    }
+
+    return (
+        <View style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "#ffffff"
+        }}>
+            <LottieView
+                source={require("../../assets/Animacao.json")}
+                style={{
+                    width: width * 0.8,
+                    height: height * 0.5
+                }}
+                autoPlay
+                loop={false}
+                onAnimationFinish={finalizarAnimacao}
+            />
+        </View>
+    );
+}

@@ -1,101 +1,88 @@
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TextInput, Alert } from 'react-native';
-import { Botao, BotaoVerde, BotaoGrande } from '../Components/Botoes';
+import { Botao } from '../Componentes/Botoes';
 import { useNavigation } from '@react-navigation/native';
-
-// importando a biblioteca para criar hooks
 import { useState } from 'react';
-import HomeScreen from './HomeScreen';
-
 export default function CadastroScreen() {
-
-    // Criando as hooks para a tela de cadastro
-    const [email, setEmail] = useState("")
-    const [senha, setSenha] = useState("")
-
-    const navigation = useNavigation()
-    
-    function navegarh(){
-        navigation.navigate("HomeScreen")
+    const [email, setEmail] = useState("");
+    const [senha, setSenha] = useState("");
+    const navigation = useNavigation();
+    function voltarHome() {
+        navigation.navigate("HomeScreen");
     }
-
-
     async function CriarCadastro() {
         if (email.length < 5) {
-            return Alert.alert("ATENÇÃO", "Preencha o e-mail corretamente !")
+            return Alert.alert("Erro", "Digite um email válido");
         }
         if (senha.length < 5) {
-            return Alert.alert("ATENÇÃO", "Preencha o campo senha !")
+            return Alert.alert("Erro", "Digite uma senha válida");
         }
-    
         try {
-            const resposta = await fetch(`http://10.111.9.96:3001/cadastrar`, {
+            const resposta = await fetch("http://10.111.9.174:3001/cadastrar", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    "email": email,
-                    "senha": senha
+                    email,
+                    senha
                 })
             });
-    
             const resultado = await resposta.json();
-            console.log("RESPOSTA DO SERVIDOR:", resultado);
-    
-            if (resultado.resposta == "true" || resultado.resposta == true) {
-                alert(resultado.mensagem);
+            if (resultado.resposta === "true") {
+                Alert.alert("Sucesso", resultado.mensagem);
                 navigation.navigate("HomeScreen");
             } else {
-                alert("Erro do Servidor: " + (resultado.mensagem || "Erro desconhecido"));
+                Alert.alert("Erro", resultado.mensagem);
             }
         } catch (error) {
-            console.log("ERRO NA REQUISIÇÃO:", error);
-            Alert.alert("Erro", "Não foi possível conectar ao servidor.");
+            console.log(error);
+            Alert.alert("Erro", "Não conectou ao servidor");
         }
-    } // <--- Agora tudo termina aqui dentro
+    }
     return (
         <View style={styles.container}>
-            <Text style={styles.titulo}>Tela de Cadastro</Text>
-
-            <Text style={{ fontSize: 22 }}>Digite seu E-mail</Text>
-            <TextInput style={styles.input}
-                onChangeText={setEmail}
+            <Text style={styles.titulo}>Cadastro</Text>
+            <TextInput
+                style={styles.input}
+                placeholder="Digite seu email"
                 value={email}
+                onChangeText={setEmail}
             />
-
-            <Text style={{ fontSize: 22 }}>Digite sua senha</Text>
-            <TextInput style={styles.input}
-                onChangeText={setSenha}
+            <TextInput
+                style={styles.input}
+                placeholder="Digite sua senha"
                 value={senha}
+                onChangeText={setSenha}
                 secureTextEntry
             />
-
-            <Botao acao={CriarCadastro} texto={"Finalizar Cadastro"} cor={"#52a4e3"} tamanhoFonte={30} />
-            <Botao acao={navegarh} texto={"Voltar a Home"} cor={"#52a4e3"} tamanhoFonte={30} />
-
+            <Botao
+                texto="Cadastrar"
+                cor="green"
+                acao={CriarCadastro}
+            />
+            <Botao
+                texto="Voltar"
+                cor="blue"
+                acao={voltarHome}
+            />
         </View>
-    )
+    );
 }
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        marginTop: 50
+        justifyContent: "center",
+        alignItems: "center"
     },
     titulo: {
         fontSize: 30,
-        fontWeight: 'bold',
-        marginBottom: 30
+        marginBottom: 20
     },
     input: {
-        borderWidth: 1,
         width: 300,
-        borderRadius: 10,
-        marginVertical: 20,
-        fontSize: 30,
-        height: 60
+        height: 50,
+        borderWidth: 1,
+        margin: 10,
+        padding: 10
     }
-})
+});

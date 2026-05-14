@@ -1,87 +1,80 @@
-const express = require('express')
-const cors = require('cors')
-const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
-const conexao = require('./db');
+require("dotenv").config();
 
-const app = express()
+const express = require("express");
+const cors = require("cors");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const conexao = require("./db");
 
-app.use(cors())
-app.use(express.json())
+const app = express();
 
-const porta = 3001
+app.use(cors());
+app.use(express.json());
 
-const api_chave = process.env.API_SEGREDO
+const porta = 3001;
 
-app.listen(porta, () => { 
-    console.log(`Servidor rodando em: http://localhost:${porta}`)
-  })
-  
-  app.post("/cadastrar", async (req, res) => {
+app.listen(porta, () => {
+    console.log(`Servidor rodando em http://localhost:${porta}`);
+});
+app.post("/cadastrar", async (req, res) => {
     const { email, senha } = req.body;
-
-    if(email.length <= 3){
-        return res.json({"mensagem":"Preencha o e-mail!"})
-    }
-
-    if(senha.length <= 3){
-        return res.json({"mensagem":"Preencha uma senha com no mínimo 7 caracteres"})
-    }
-
-
-
     try {
-        const novaSenha = await bcrypt.hash(senha, 10);
-        const [resultado] = await conexao.execute(
-            "INSERT INTO usuarios (email, senha) values (?,?)", 
-            [email, novaSenha]
+        const senhaCriptografada = await bcrypt.hash(senha, 10);
+        await conexao.execute(
+            "INSERT INTO usuarios(email, senha) VALUES (?, ?)",
+            [email, senhaCriptografada]
         );
-
         res.json({
-            "resposta": "true", 
-            "mensagem": "Usuário inserido com sucesso"
+            resposta: "true",
+            mensagem: "Cadastro realizado com sucesso"
         });
-
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ 
-            "resposta": "false", 
-            "mensagem": "Erro interno no servidor" 
+        console.log(error);
+        res.json({
+            resposta: "false",
+            mensagem: "Erro ao cadastrar"
         });
     }
 });
-
 app.post("/login", async (req, res) => {
     const { email, senha } = req.body;
     try {
-        const [usuarios] = await conexao.execute(`SELECT * FROM usuarios WHERE email = ?`, [email]);
-
-        if (usuarios.length > 0) {
-            const usuario = usuarios[0];
-            const validou = await bcrypt.compare(senha, usuario.senha);
-
-            if (validou == false) { 
-                return res.status(401).json({ "mensagem": "Usuário ou senha inválido!" });
-            }
-
-            const token = jwt.sign(
-                { email: email },
-                api_chave || 'fallback_chave',
-                { expiresIn: '1h' }
-            );
-
+        const [usuarios] = await conexao.execute(
+            "SELECT * FROM usuarios WHERE email = ?",
+            [email]
+        );
+        if (usuarios.length === 0) {
             return res.json({
-                "resposta": "true",
-                "token": token,
-                "mensagem": "Bem-vindo!"
+                resposta: "false",
+                mensagem: "Usuário não encontrado"
             });
-
-        } else { 
-            return res.json({ "resposta": "false", "mensagem": "E-mail não encontrado!" });
         }
-        
+        const usuario = usuarios[0];
+        const senhaValida = await bcrypt.compare(
+            senha,
+            usuario.senha
+        );
+        if (!senhaValida) {
+            return res.json({
+                resposta: "false",
+                mensagem: "Senha inválida"
+            });
+        }
+        const token = jwt.sign(
+            { id: usuario.id },
+            process.env.API_SEGREDO,
+            { expiresIn: "1h" }
+        );
+        res.json({
+            resposta: "true",
+            mensagem: "Login realizado",
+            token
+        });
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ "resposta": "false", "mensagem": "Erro no servidor" });
+        console.log(error);
+        res.json({
+            resposta: "false",
+            mensagem: "Erro no login"
+        });
     }
 });
