@@ -1,20 +1,29 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+//Montando a navegação de telas
+//detecta interação tela x usuario
+import 'react-native-gesture-handler'
+
+//container de navegação
+import { NavigationContainer } from '@react-navigation/native';
+
+//criando a pilha
+import {createStackNavigator} from '@react-navigation/stack';
+import HomeScreen from './src/Screens/HomeScreen';
+import CriarTarefaScreen from './src/Screens/CriarTarefaScreen';
+import CadastroScreen from './src/Screens/CadastroScreen';
+import LoginScreen from './src/Screens/LoginScreen';
+
+const PilhasTelas = createStackNavigator()
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+    <PilhasTelas.Navigator>
+    <PilhasTelas.Screen name="HomeScreen" component={HomeScreen} options={{headerShown:false}}/>
+    <PilhasTelas.Screen name="CriarTarefaScreen" component={CriarTarefaScreen} options={{headerShown:false}}/>
+    <PilhasTelas.Screen name="CadastroScreen" component={CadastroScreen} options={{headerShown:false}}/>
+    <PilhasTelas.Screen name="LoginScreen" component={LoginScreen} options={{headerShown:false}}/>
+
+    </PilhasTelas.Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fbfb',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
