@@ -1,18 +1,13 @@
 require("dotenv").config();
-
 const express = require("express");
 const cors = require("cors");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const conexao = require("./db");
-
 const app = express();
-
 app.use(cors());
 app.use(express.json());
-
 const porta = 3001;
-
 app.listen(porta, () => {
     console.log(`Servidor rodando em http://localhost:${porta}`);
 });
