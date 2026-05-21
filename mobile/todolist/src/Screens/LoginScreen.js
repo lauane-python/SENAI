@@ -23,7 +23,7 @@ export default function LoginScreen() {
             const resposta = await dados.json();
             if (resposta.mensagem === "Acesso Liberado") {
                 await AsyncStorage.setItem("meu_token", resposta.token);
-                navigation.navigate("CriarTarefaScreen");
+                navigation.replace("CriarTarefaScreen");
             } else {
                 Alert.alert("Erro", resposta.mensagem);
             }
