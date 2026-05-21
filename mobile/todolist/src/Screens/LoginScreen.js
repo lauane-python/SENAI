@@ -6,20 +6,20 @@ export default function LoginScreen() {
     const [email, setEmail] = useState("");
     const [senha, setSenha] = useState("");
     const navigation = useNavigation();
-    async function FazerLogin() {
+    async function Logar() {
         try {
-            const resposta = await fetch("http://10.111.9.174:3001/login", {
+            const dados = await fetch('http://10.111.9.174:3000/login', {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json"
+                    'Content-Type': "application/json",
                 },
                 body: JSON.stringify({
-                    email,
-                    senha
+                    email:email,
+                    senha:senha
                 })
             });
-            const resultado = await resposta.json();
-            if (resultado.resposta === "true") {
+            const resultado = await dados.json();
+            if (resultado.dados === "true") {
                 Alert.alert("Sucesso", resultado.mensagem);
                 navigation.navigate("CriarTarefaScreen");
             } else {
@@ -52,8 +52,8 @@ export default function LoginScreen() {
                 onChangeText={setSenha}
                 secureTextEntry
             />
-            <Botao texto="Entrar" cor="green" acao={FazerLogin}/>
-            <Botao texto="Cadastro" cor="blue" acao={irCadastro}/>
+            <Botao texto="Logar" cor="green" acao={Logar}/>
+            <Botao texto="Cadastrar" cor="blue" acao={irCadastro}/>
             <Botao texto="Home" cor="purple" acao={irHome}/>
         </View>
     );

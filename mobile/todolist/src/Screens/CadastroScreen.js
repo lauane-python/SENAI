@@ -17,7 +17,7 @@ export default function CadastroScreen() {
             return Alert.alert("Erro", "Digite uma senha válida");
         }
         try {
-            const resposta = await fetch("http://10.111.9.174:3001/cadastrar", {
+            const resposta = await fetch("http://10.111.9.174:3000/cadastrar", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
