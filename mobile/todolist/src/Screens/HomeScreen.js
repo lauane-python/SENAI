@@ -1,46 +1,39 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Alert, Text, View } from 'react-native';
 import { Botao } from '../Componentes/Botoes';
 import { useNavigation } from "@react-navigation/native";
+import Styles from '../Styles/Styles';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useEffect } from 'react';
 
 export default function HomeScreen() {
     const navigation = useNavigation();
-
-    function navegarCadastro() {
-        navigation.navigate("CadastroScreen");
+    async function buscarToken() {
+        console.log(await AsyncStorage.getItem("meu_token"))
     }
-
-    function navegarLogin() {
-        navigation.navigate("LoginScreen");
-    }
-
+    useEffect(()=>{
+        buscarToken()
+    },[])
     return (
-        <View style={styles.container}>
-            <Text style={styles.texto}>Minha Tela Home</Text>
-
-            <Botao
-                texto="Cadastre-se"
-                cor="green"
-                acao={navegarCadastro}
-            />
-
-            <Botao
-                texto="Fazer Login"
-                cor="blue"
-                acao={navegarLogin}
-            />
+        <View style={Styles.container}>
+            <Text style={Styles.titulo}>
+                TODOLIST
+            </Text>
+            <Text style={Styles.subtitulo}>
+                Organize suas tarefas{"\n"}
+                com produtividade e elegância
+            </Text>
+            <View style={Styles.card}>
+                <Botao
+                    texto="Cadastre-se"
+                    cor="green"
+                    acao={() => navigation.navigate("CadastroScreen")}
+                />
+                <Botao
+                    texto="Fazer Login"
+                    cor="blue"
+                    acao={() => navigation.navigate("LoginScreen")}
+                />
+            </View>
         </View>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    texto: {
-        fontSize: 25,
-        marginBottom: 20
-    }
-});

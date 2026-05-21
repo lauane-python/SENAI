@@ -1,24 +1,26 @@
-import { StyleSheet, Text, TouchableOpacity } from "react-native";
-
-const Botao = ({ cor, texto, acao, tamFonte = 20 }) => {
+import { Text, TouchableOpacity } from "react-native";
+import Styles from "../Styles/Styles";
+const cores = {
+    green: "#716f35",
+    blue: "#804256",
+    purple: "#a56940"
+};
+const Botao = ({ cor, texto, acao, tamFonte = 18 }) => {
     return (
         <TouchableOpacity
             onPress={acao}
-            style={[styles.botao, { backgroundColor: cor }]}
-        >
-            <Text style={{ fontSize: tamFonte, color: "white" }}>
+            style={[
+                Styles.botao,
+                { backgroundColor: cores[cor] || "#804256" }
+            ]}>
+            <Text
+                style={[
+                    Styles.textoBotao,
+                    { fontSize: tamFonte }
+                ]}>
                 {texto}
             </Text>
         </TouchableOpacity>
     );
 };
-const styles = StyleSheet.create({
-    botao: {
-        padding: 20,
-        width: 220,
-        alignItems: "center",
-        borderRadius: 20,
-        margin: 10
-    }
-});
 export { Botao };
