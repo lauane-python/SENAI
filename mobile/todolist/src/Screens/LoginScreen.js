@@ -18,12 +18,13 @@ export default function LoginScreen() {
                     senha:senha
                 })
             });
-            const resultado = await dados.json();
-            if (resultado.dados === "true") {
-                Alert.alert("Sucesso", resultado.mensagem);
+            const resposta = await dados.json();
+            console.log(resposta)
+            if (resposta.dados === "true") {
+                Alert.alert("Sucesso", resposta.mensagem);
                 navigation.navigate("CriarTarefaScreen");
             } else {
-                Alert.alert("Erro", resultado.mensagem);
+                Alert.alert("Erro", resposta.mensagem);
             }
         } catch (error) {
             console.log(error);
