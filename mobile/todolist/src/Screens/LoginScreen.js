@@ -2,6 +2,7 @@ import { StyleSheet, Text, View, TextInput, Alert } from 'react-native';
 import { Botao } from '../Componentes/Botoes';
 import { useNavigation } from "@react-navigation/native";
 import { useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 export default function LoginScreen() {
     const [email, setEmail] = useState("");
     const [senha, setSenha] = useState("");
@@ -20,11 +21,11 @@ export default function LoginScreen() {
             });
             const resposta = await dados.json();
             console.log(resposta)
-            if (resposta.dados === "true") {
-                Alert.alert("Sucesso", resposta.mensagem);
+            if (resposta.mensagem === "Acesso Liberado") {
+                await AsyncStorage.setItem("meu_token",resposta.token)
                 navigation.navigate("CriarTarefaScreen");
             } else {
-                Alert.alert("Erro", resposta.mensagem);
+                Alert.alert("Usuário ou senha inválido", resposta.mensagem);
             }
         } catch (error) {
             console.log(error);
