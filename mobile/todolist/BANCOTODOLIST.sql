@@ -1,6 +1,6 @@
 -- --------------------------------------------------------
 -- Servidor:                     127.0.0.1
--- Versão do servidor:           10.4.32-MariaDB - mariadb.org binary distribution
+-- Versão do servidor:           12.2.2-MariaDB - MariaDB Server
 -- OS do Servidor:               Win64
 -- HeidiSQL Versão:              12.10.0.7000
 -- --------------------------------------------------------
@@ -47,12 +47,13 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
   `criado_em` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Copiando dados para a tabela todolist.usuarios: ~1 rows (aproximadamente)
+-- Copiando dados para a tabela todolist.usuarios: ~2 rows (aproximadamente)
 DELETE FROM `usuarios`;
 INSERT INTO `usuarios` (`id`, `email`, `senha`, `criado_em`) VALUES
-	(1, 'lauanepasquino@gmail.com', '$2b$10$tzOWPmC4v07ZAayLQQeCpe67/0NeL2F.E3Ib8C0hSiqV6nj16O4IC', '2026-05-14 18:39:52');
+	(1, 'lauanepasquino@gmail.com', '$2b$10$tzOWPmC4v07ZAayLQQeCpe67/0NeL2F.E3Ib8C0hSiqV6nj16O4IC', '2026-05-14 18:39:52'),
+	(2, 'pasquinilauane@gmail.com', '$2b$10$FWDPT0OlDXFUPFWM7PJpoe6.j7rPN5HAn9cXz8ocargKlMNIs74Da', '2026-05-21 13:08:22');
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
